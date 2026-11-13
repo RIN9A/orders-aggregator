@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ValidationError } from "../errors.js";
 import type { Order, OrdersRepository } from "../repositories/orders.js";
-import { parseRub, toKop } from "../utils/money.js";
+import { parseDiscountPercent, parseRub, toKop } from "../utils/money.js";
 import { parseUtc } from "../utils/time.js";
 
 /** Заказ в формате внешнего API (поля, которые нам нужны; остальные игнорируем). */
@@ -9,6 +9,8 @@ const ExternalOrder = z.object({
   id: z.string().min(1),
   customerId: z.string().min(1),
   amount: z.union([z.number(), z.string()]),
+  discountPercent: z.union([z.number(), z.string()]),
+  amountPaid: z.union([z.number(), z.string()]),
   status: z.enum(["pending", "paid", "refunded"]),
   createdAt: z.string(),
   updatedAt: z.string(),
@@ -28,6 +30,8 @@ export class OrdersService {
         id: o.id,
         customerId: o.customerId,
         amountKop: toKop(parseRub(o.amount)),
+        discountPercent: parseDiscountPercent(o.discountPercent),
+        amountPaidKop: toKop(parseRub(o.amountPaid)),
         status: o.status,
         createdAt: parseUtc(o.createdAt),
         updatedAt: parseUtc(o.updatedAt),

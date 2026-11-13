@@ -1,0 +1,3 @@
+ALTER TABLE orders
+  ADD COLUMN discount_percent INTEGER NOT NULL DEFAULT 0,
+  ADD COLUMN amount_paid_kop BIGINT NOT NULL DEFAULT 0;

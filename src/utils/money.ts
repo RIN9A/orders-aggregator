@@ -20,3 +20,12 @@ export function toKop(rub: number): number {
 export function fromKop(kop: number): number {
   return kop / 100;
 }
+
+/** Процент скидки из внешнего API: число или строка с числом ("12.5"). */
+export function parseDiscountPercent(raw: unknown): number {
+  const value = typeof raw === "string" ? Number(raw.trim()) : raw;
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 100) {
+    throw new Error(`invalid discountPercent: ${JSON.stringify(raw)}`);
+  }
+  return value;
+}
