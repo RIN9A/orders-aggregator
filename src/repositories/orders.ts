@@ -15,7 +15,7 @@ interface Row {
   id: string;
   customer_id: string;
   amount_kop: string;
-  discount_percent: number;
+  discount_percent: string;
   amount_paid_kop: string;
   status: Order["status"];
   created_at: Date;
@@ -26,7 +26,7 @@ const fromRow = (r: Row): Order => ({
   id: r.id,
   customerId: r.customer_id,
   amountKop: Number(r.amount_kop),
-  discountPercent: r.discount_percent,
+  discountPercent: Number(r.discount_percent),
   amountPaidKop: Number(r.amount_paid_kop),
   status: r.status,
   createdAt: r.created_at,
@@ -52,7 +52,7 @@ export class OrdersRepository {
          customer_id = excluded.customer_id,
          amount_kop  = excluded.amount_kop,
          discount_percent = excluded.discount_percent,
-         amount_paid_kop = excluded.amount_paid_kop
+         amount_paid_kop = excluded.amount_paid_kop,
          status      = excluded.status,
          created_at  = excluded.created_at,
          updated_at  = excluded.updated_at`,

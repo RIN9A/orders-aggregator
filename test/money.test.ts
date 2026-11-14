@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fromKop, parseRub, toKop } from "../src/utils/money.js";
+import { fromKop, parseDiscountPercent, parseRub, toKop } from "../src/utils/money.js";
 
 describe("parseRub", () => {
   it("принимает число и строку с числом", () => {
@@ -28,5 +28,21 @@ describe("toKop / fromKop", () => {
   it("копейки в рубли", () => {
     expect(fromKop(250000)).toBe(2500);
     expect(fromKop(1099)).toBe(10.99);
+  });
+});
+
+describe("perseDiscountPercent", () => {
+  it("принимает число и строку с числом", () => {
+    expect(parseDiscountPercent(0)).toBe(0);
+    expect(parseDiscountPercent(16.5)).toBe(16.5);
+    expect(parseDiscountPercent("12.5")).toBe(12.5);
+    expect(parseDiscountPercent(" 10 ")).toBe(10);
+  });
+
+  it("отклоняет некорректные значения", () => {
+    expect(() => parseDiscountPercent("abc")).toThrow();
+    expect(() => parseDiscountPercent(null)).toThrow();
+    expect(() => parseDiscountPercent(-1)).toThrow();
+    expect(() => parseDiscountPercent(101)).toThrow();
   });
 });
